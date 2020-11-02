@@ -51,15 +51,17 @@ void mouse_init(void) {
 	mouse_wait_write();
 	outb(KBSTATP, 0xa8);
 
-	mouse_wait_read();
+	mouse_wait_write();
+	outb(KBSTATP, 0x20);
 
+	mouse_wait_read();
 	status_temp = (inb(KBDATAP) | 2);
 
 	mouse_wait_read();
 	outb(KBSTATP, 0x60);
 
 	mouse_wait_write();
-	outb(KBDATAP, status_temp);
+	outb(0x60, status_temp);
 
 	mouse_write(0xf6);
 	mouse_read();
@@ -73,10 +75,10 @@ void mouse_init(void) {
 	mouse_write(0xf4);
 	mouse_read();
 
-	initlock(&mouse_lock, "mouse_lock");
-
+	initlock(&mouse_lock, "mouse");
 	picenable(IRQ_MOUSE);
 	ioapicenable(IRQ_MOUSE, 0);
+
 	count = 0;
 }
 
