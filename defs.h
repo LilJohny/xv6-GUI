@@ -10,6 +10,33 @@ struct sleeplock;
 struct stat;
 struct superblock;
 
+
+
+struct PIXEL;
+struct PIXELA;
+
+// graphics.c
+void            initGraphics(void);
+int             drawChar(struct PIXEL*, char, int, int, struct PIXELA);
+void            drawStr(struct PIXEL*, char *, int, int, struct PIXELA);
+void            demo(void);
+
+//pixel.h
+struct PIXELA          getRed(void);
+struct PIXELA          getBlue(void);
+struct PIXELA          getGreen(void);
+
+struct PIXELA          getYellow(void);
+struct PIXELA          getCyan(void);
+struct PIXELA          getMagenta(void);
+
+struct PIXELA          getWhite(void);
+struct PIXELA          getBlack(void);
+struct PIXELA          getOrange(void);
+struct PIXELA          getBrown(void);
+
+
+
 // bio.c
 void            binit(void);
 struct buf*     bread(uint, uint);
@@ -185,10 +212,6 @@ void            switchuvm(struct proc*);
 void            switchkvm(void);
 int             copyout(pde_t*, uint, void*, uint);
 void            clearpteu(pde_t *pgdir, char *uva);
-
-//mouse.c
-void mouse_init(void);
-void mouseintr(void);
 
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))
