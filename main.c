@@ -32,6 +32,7 @@ main(void)
   fileinit();      // file table
   ideinit();       // disk
   mouse_init();    // mouse
+  init_cursor();	 // creates default cursor
   initGraphics();  // graphics
   demo();		       // launches demo
   startothers();   // start other processors

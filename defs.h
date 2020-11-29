@@ -18,6 +18,7 @@ void initGraphics(void);
 int drawChar(struct PIXEL *, char, int, int, struct PIXELA);
 void drawStr(struct PIXEL *, char *, int, int, struct PIXELA);
 void demo(void);
+void init_cursor();
 
 //pixel.h
 struct PIXELA getRed(void);
