@@ -27,6 +27,8 @@ OBJS = \
 	uart.o\
 	vectors.o\
 	vm.o\
+	mouse.o\
+	msg.o\
 	graphics.o\
 
 # Cross-compiling (e.g., on Mac OS X)

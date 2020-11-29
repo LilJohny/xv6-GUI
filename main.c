@@ -31,7 +31,7 @@ main(void)
   binit();         // buffer cache
   fileinit();      // file table
   ideinit();       // disk
-  mouse_init()l    // mouse
+  mouse_init();    // mouse
   initGraphics();  // graphics
   demo();		       // launches demo
   startothers();   // start other processors
