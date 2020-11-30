@@ -6,6 +6,7 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
+#include "pixel.h"
 
 struct {
   struct spinlock lock;
@@ -310,6 +311,31 @@ wait(void)
     sleep(curproc, &ptable.lock);  //DOC: wait-sleep
   }
 }
+
+
+
+// GUI syscall
+// xv6 GUI draw pixel call
+int drawpixel(int offset, int r, int g, int b) {
+  PIXEL *DISPLAY_pix_pointer = (PIXEL *)0xfd000000;
+  DISPLAY_pix_pointer+= offset;
+  DISPLAY_pix_pointer->R = r;
+  DISPLAY_pix_pointer->G = g;
+  DISPLAY_pix_pointer->B = b;
+  return 0;
+}
+
+int getpixel(int offset, PIXEL* store) {
+  PIXEL *DISPLAY_pix_pointer = (PIXEL *)0xfd000000;
+  DISPLAY_pix_pointer+= offset;
+
+  store->R = DISPLAY_pix_pointer->R;
+  store->G = DISPLAY_pix_pointer->G;
+  store->B = DISPLAY_pix_pointer->B;
+  return 0;
+}
+
+
 
 //PAGEBREAK: 42
 // Per-CPU process scheduler.

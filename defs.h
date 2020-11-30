@@ -17,25 +17,6 @@ struct PIXELA;
 
 // graphics.c
 void            initGraphics(void);
-int             drawChar(struct PIXEL*, char, int, int, struct PIXELA);
-void            drawStr(struct PIXEL*, char *, int, int, struct PIXELA);
-void            demo(void);
-
-//pixel.h
-struct PIXELA          getRed(void);
-struct PIXELA          getBlue(void);
-struct PIXELA          getGreen(void);
-
-struct PIXELA          getYellow(void);
-struct PIXELA          getCyan(void);
-struct PIXELA          getMagenta(void);
-
-struct PIXELA          getWhite(void);
-struct PIXELA          getBlack(void);
-struct PIXELA          getOrange(void);
-struct PIXELA          getBrown(void);
-
-
 
 // bio.c
 void            binit(void);
@@ -133,6 +114,8 @@ int             pipewrite(struct pipe*, char*, int);
 int             cpuid(void);
 void            exit(void);
 int             fork(void);
+int             drawpixel(int, int, int, int);
+int             getpixel(int, struct PIXEL*);
 int             growproc(int);
 int             kill(int);
 struct cpu*     mycpu(void);

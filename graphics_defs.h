@@ -4,11 +4,7 @@
 #define DISPLAY_WIDTH 800
 #define DISPLAY_HEIGHT 600
 
-#include "pixel.h"
 
 #ifndef __ASSEMBLER__
-
-// Pixel array that represents the display
-PIXEL *display;
 
 #endif
