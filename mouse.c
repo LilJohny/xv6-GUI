@@ -11,6 +11,7 @@ static struct spinlock mouse_lock;
 static struct {
 	int x_sgn, y_sgn, x_mov, y_mov;
 	int l_btn, r_btn, m_btn;
+	int x_overflow, y_overflow;
 } packet;
 static int count;
 
@@ -83,13 +84,14 @@ void mouse_init(void) {
 }
 
 void gen_mouse_message() {
-	if (packet.x_sgn) {
-		packet.x_mov -= 256;
-	}
-
-	if (packet.y_sgn) {
-		packet.y_mov -= 256;
-	}
+//	if (packet.x_sgn) {
+//		packet.x_mov -= 256;
+//	}
+//
+//	if (packet.y_sgn) {
+//		packet.y_mov -= 256;
+//	}
+	packet.y_mov *=-1;
 	int btns = packet.l_btn | (packet.r_btn << 1) | (packet.m_btn << 2);
 
 	message msg;
@@ -116,9 +118,9 @@ void mouseintr(void) {
 		if (data & 0x80) {
 			packet.y_sgn = data >> 5 & 0x1;
 			packet.x_sgn = data >> 4 & 0x1;
-			packet.y_sgn = data >> 2 & 0x1;
-			packet.y_sgn = data >> 1 & 0x1;
-			packet.y_sgn = data >> 0 & 0x1;
+			packet.m_btn = data >> 2 & 0x1;
+			packet.r_btn = data >> 1 & 0x1;
+			packet.l_btn = data >> 0 & 0x1;
 		} else {
 			count = 0;
 		}
