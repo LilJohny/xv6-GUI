@@ -11,7 +11,6 @@ static struct spinlock mouse_lock;
 static struct {
 	int x_sgn, y_sgn, x_mov, y_mov;
 	int l_btn, r_btn, m_btn;
-	int x_overflow, y_overflow;
 } packet;
 static int count;
 
