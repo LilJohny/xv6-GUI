@@ -260,7 +260,7 @@ int main(void) {
   drawStr("Hello World!", 50, 400, color);
 
   while(1) {
-      // Busy loop
+      // Endless loop
   }
   exit();
 }
