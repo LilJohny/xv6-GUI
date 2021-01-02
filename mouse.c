@@ -154,7 +154,6 @@ void mouseintr(void) {
 					count = 0;
 					break;
 				}
-
 			case 2:  packet.x_mov = data;
 				break;
 			case 3:  packet.y_mov = data;

@@ -150,10 +150,10 @@ void drawStr(PIXEL *buf, char *str, int x, int y, PIXELA color) {
 	}
 }
 void change_cursor_loc(int x_diff, int y_diff) {
-	if (cursor_loc.x_coord + x_diff >= 0 && cursor_loc.x_coord + x_diff < DISPLAY_WIDTH) {
-		cursor_loc.x_coord += x_diff;
+	if (cursor_loc.y_coord - x_diff >= 0 && cursor_loc.y_coord - x_diff < DISPLAY_HEIGHT) {
+		cursor_loc.y_coord -= x_diff;
 	}
-	if (cursor_loc.y_coord + y_diff >= 0 && cursor_loc.y_coord + y_diff < DISPLAY_HEIGHT) {
-		cursor_loc.y_coord += y_diff;
+	if (cursor_loc.x_coord + y_diff >= 0 && cursor_loc.x_coord + y_diff < DISPLAY_WIDTH) {
+		cursor_loc.x_coord += y_diff;
 	}
 }
