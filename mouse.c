@@ -11,8 +11,11 @@ static struct spinlock mouse_lock;
 static struct {
 	int x_sgn, y_sgn, x_mov, y_mov;
 	int l_btn, r_btn, m_btn;
+	int x_overflow, y_overflow;
 } packet;
 static int count;
+static int last_btn;
+static int recovery;
 
 void mouse_wait_read() {
 	uint time_out = 100000;
@@ -30,8 +33,6 @@ void mouse_wait_write() {
 			return;
 	}
 }
-
-
 
 uint mouse_read() {
 	mouse_wait_read();
@@ -82,55 +83,95 @@ void mouse_init(void) {
 	count = 0;
 }
 
+void gen_mouse_up_message(int btns) {
+	message msg;
+	msg.msg_type = M_MOUSE_UP;
+	msg.params[0] = btns;
+	handle_message(&msg);
+}
+
 void gen_mouse_message() {
-//	if (packet.x_sgn) {
-//		packet.x_mov -= 256;
-//	}
-//
-//	if (packet.y_sgn) {
-//		packet.y_mov -= 256;
-//	}
-	packet.y_mov *=-1;
+	if (packet.x_overflow || packet.y_overflow) {
+		return;
+	}
+	int x = packet.x_sgn ? (0xffffff00 | (packet.x_mov & 0xff)) : (packet.x_mov & 0xff);
+	int y = packet.y_sgn ? (0xffffff00 | (packet.y_mov & 0xff)) : (packet.y_mov & 0xff);
+	packet.x_mov = x;
+	packet.y_mov = y;
 	int btns = packet.l_btn | (packet.r_btn << 1) | (packet.m_btn << 2);
 
 	message msg;
+
 	if (packet.x_mov || packet.y_mov) {
 		msg.msg_type = M_MOUSE_MOVE;
 		msg.params[0] = packet.x_mov;
 		msg.params[1] = packet.y_mov;
 		msg.params[2] = btns;
+		if (btns != last_btn) {
+			gen_mouse_up_message(btns);
+		}
 	} else if (btns) {
 		msg.msg_type = M_MOUSE_DOWN;
 		msg.params[0] = btns;
 	} else {
-		msg.msg_type = M_MOUSE_UP;
-		msg.params[0] = btns;
+		gen_mouse_up_message(btns);
 	}
+	last_btn = btns;
 	handle_message(&msg);
 }
 
 void mouseintr(void) {
 	acquire(&mouse_lock);
-	int data = inb(KBDATAP);
-	count++;
-	if (count == 1) {
-		if (data & 0x80) {
-			packet.y_sgn = data >> 5 & 0x1;
-			packet.x_sgn = data >> 4 & 0x1;
-			packet.m_btn = data >> 2 & 0x1;
-			packet.r_btn = data >> 1 & 0x1;
-			packet.l_btn = data >> 0 & 0x1;
-		} else {
-			count = 0;
+	int state;
+	while (((state = inb(0x64)) & 1) == 1) {
+		int data = inb(0x60);
+		count++;
+
+		if (recovery == 0 && (data & 255) == 0)
+			recovery = 1;
+		else if (recovery == 1 && (data & 255) == 0)
+			recovery = 2;
+		else if ((data & 255) == 12)
+			recovery = 0;
+		else
+			recovery = -1;
+
+		switch(count)
+		{
+			case 1: if(data & 0x08)
+				{
+					packet.y_overflow = (data >> 7) & 0x1;
+					packet.x_overflow = (data >> 6) & 0x1;
+					packet.y_sgn = (data >> 5) & 0x1;
+					packet.x_sgn = (data >> 4) & 0x1;
+					packet.m_btn = (data >> 2) & 0x1;
+					packet.r_btn = (data >> 1) & 0x1;
+					packet.l_btn = (data >> 0) & 0x1;
+					break;
+				}
+				else
+				{
+					count = 0;
+					break;
+				}
+
+			case 2:  packet.x_mov = data;
+				break;
+			case 3:  packet.y_mov = data;
+				break;
+			default: count=0;    break;
 		}
-	} else if (count == 2) {
-		packet.x_mov = data;
-	} else if (count == 3) {
-		packet.y_mov = data;
-		count = 0;
-		gen_mouse_message();
-	} else {
-		count = 0;
+
+		if (recovery == 2)
+		{
+			count = 0;
+			recovery = -1;
+		}
+		else if (count == 3)
+		{
+			count = 0;
+			gen_mouse_message();
+		}
 	}
 	release(&mouse_lock);
 }
