@@ -6,6 +6,9 @@
 #include "fcntl.h"
 #include "graphics_defs.h"
 #include "font.h"
+#include "icons.h"
+#include "bitmap.c"
+#include "pixel.h"
 
 /* --------------------------------------------------------------------------------------------------------------------- */
 // Pre-defined colors
@@ -197,6 +200,48 @@ void drawStr(char *str, int x, int y, PIXELA color) {
     }
 }
 
+// Defines icon from picture defined by array
+ICON getIconFromPicture(int x, int y, int width, int height, PIXEL* image){
+    ICON ic;
+    ic.x = x;
+    ic.y = y;
+    ic.width = width;
+    ic.height = height;
+    ic.image = image;
+    return ic;
+}
+
+// Draws icon
+void drawIcon(ICON ic) {
+    PIXEL* buf = display;
+    int i, j;
+    PIXEL *t;
+
+    if (ic.height > MAX_ICON_HEIGHT || ic.width > MAX_ICON_WIDTH){
+        return;
+    }
+
+    for (i = 0; i < ic.height; i++) {
+        for (j = 0; j < ic.width; j++) {
+
+            PIXEL cur_pix;
+//            cur_pix.R = ic.image[j * 3 * i + j * 3 + 0];
+//            cur_pix.G = ic.image[j * 3 * i + j * 3 + 1];
+//            cur_pix.B = ic.image[j * 3 * i + j * 3 + 2];
+
+            cur_pix.R = (ic.image + i * ic.width + j)->R;
+            cur_pix.G = (ic.image + i * ic.width + j)->G;
+            cur_pix.B = (ic.image + i * ic.width + j)->B;
+            //cur_pix.B = ic.image[j * 3 * i + j + 2];
+
+            t = buf + (ic.y + i) * DISPLAY_WIDTH + ic.x + j;
+
+            drawPixel(t-display, cur_pix);
+
+        }
+    }
+}
+
 /* --------------------------------------------------------------------------------------------------------------------- */
 // Demo function of GUI capabilities
 
@@ -242,6 +287,29 @@ void demo() {
         offset = 0;
         offsetY += 15;
     }
+//TODO fix pointer bug
+
+    char fname[] = "8.bmp";
+    PIXEL* bmp_img = malloc(55 * 40 * 3);
+    int h, w;
+    readBMP(fname, bmp_img, &h, &w);
+//    h = 55;
+//    w = 40;
+//    for(int i = 0; i < 55; i++){
+//        for(int j = 0; j < 40; j ++){
+//            PIXEL p = PIXELAtoPIXEL(getOrange());
+//
+//            bmp_img[i * 40 + j] = p;
+//
+//        }
+//    }
+
+    printf(1, "\nImage width: 0x%x\n\n", w);
+
+    ICON ic = getIconFromPicture(50+offset, 80+offsetY, w, h, bmp_img);
+
+    drawIcon(ic);
+
 }
 
 int main(void) {

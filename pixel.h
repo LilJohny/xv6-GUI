@@ -1,4 +1,5 @@
-#ifndef __ASSEMBLER__
+#ifndef PIXELH
+#define  PIXELH
 
 // Maximal and minimal RGBA channel values
 #define COLOUR_MAX 255
