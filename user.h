@@ -42,4 +42,6 @@ void* malloc(uint);
 void free(void*);
 int atoi(const char*);
 //
-struct cursor get_cursor_position(void);
+int get_cursor_position_y_coord(void);
+int get_cursor_position_x_coord(void);
+int init_graphics(void);

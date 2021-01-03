@@ -22,4 +22,6 @@
 #define SYS_close  21
 #define SYS_drawpixel 22
 #define SYS_getpixel 23
-#define SYS_get_cursor_position 24
+#define SYS_get_cursor_position_y_coord 24
+#define SYS_get_cursor_position_x_coord 25
+#define SYS_init_graphics 26

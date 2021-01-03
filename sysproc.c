@@ -115,6 +115,32 @@ int sys_getpixel(void) {
   return 0;
 }
 
-struct cursor sys_get_cursor_position(void){
-	return get_cursor_location();
+//extern struct cursor cursor_loc;
+
+int sys_get_cursor_position_x_coord(void){
+	return cursor_loc.x_coord;
+}
+
+int sys_get_cursor_position_y_coord(void){
+	return cursor_loc.y_coord;
+}
+
+int sys_init_graphics(void){
+	uint graphic_mem_start = KERNBASE + 0x1028;
+	uint graphic_addr = *((uint *)graphic_mem_start);
+	uchar *base = (uchar *)graphic_addr;
+	display = (PIXEL *)base;
+	PIXEL *pix = display;
+
+	PIXEL bg_color;
+	bg_color.R = 0x33;
+	bg_color.G = 0x66;
+	bg_color.B = 0xCC;
+
+	for (uint x = 0; x < DISPLAY_WIDTH; x++)
+		for (uint y = 0; y < DISPLAY_HEIGHT; y++) {
+			drawpixel(x+(y*DISPLAY_WIDTH), bg_color.R, bg_color.G,bg_color.B);
+			pix++;
+		}
+	return 0;
 }

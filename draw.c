@@ -247,6 +247,8 @@ void drawIcon(ICON ic) {
 
 struct cursor cursor_position;
 
+
+
 void demo() {
 
 	//PIXEL *pix2 = display;
@@ -295,23 +297,10 @@ void demo() {
 	PIXEL *bmp_img = malloc(55 * 40 * 3);
 	int h, w;
 	readBMP(fname, bmp_img, &h, &w);
-//    h = 55;
-//    w = 40;
-//    for(int i = 0; i < 55; i++){
-//        for(int j = 0; j < 40; j ++){
-//            PIXEL p = PIXELAtoPIXEL(getOrange());
-//
-//            bmp_img[i * 40 + j] = p;
-//
-//        }
-//    }
-
 
 	ICON ic = getIconFromPicture(50 + offset, 80 + offsetY, w, h, bmp_img);
 
 	drawIcon(ic);
-
-	cursor_position = get_cursor_position();
 
 	PIXEL pixel;
 
@@ -328,9 +317,22 @@ void demo() {
 	}
 
 }
+void fill_bg() {
+	PIXEL bg_color;
+	bg_color.R = 0x33;
+	bg_color.G = 0x66;
+	bg_color.B = 0xCC;
 
+	for (uint x = 0; x < DISPLAY_WIDTH; x++)
+		for (uint y = 0; y < DISPLAY_HEIGHT; y++) {
+			drawPixel(x+(y*DISPLAY_WIDTH), bg_color);
+		}
+}
 int main(void) {
 	printf(1, "\nshell display address: 0x%x\n\n", display);
+	cursor_position.x_coord = get_cursor_position_x_coord();
+	cursor_position.y_coord = get_cursor_position_y_coord();
+
 	demo();
 
 	PIXELA color;
@@ -344,8 +346,9 @@ int main(void) {
 	drawStr("Hello World!", 50, 400, color);
 
 	while (1) {
-		cursor_position = get_cursor_position();
+		cursor_position.x_coord = get_cursor_position_x_coord();
+		cursor_position.y_coord = get_cursor_position_y_coord();
+		init_graphics();
 		demo();
 	}
-	exit();
 }

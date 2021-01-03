@@ -15,6 +15,4 @@ struct cursor{
 void init_cursor();
 void change_cursor_loc(int x_diff, int y_diff);
 extern struct cursor cursor_loc;
-extern struct cursor cursor_default;
-struct cursor get_cursor_location();
 #endif //XV6_GUI__CURSOR_H_
