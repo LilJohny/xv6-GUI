@@ -246,6 +246,7 @@ void drawIcon(ICON ic) {
 // Demo function of GUI capabilities
 
 struct cursor cursor_position;
+struct cursor last_cursor_position;
 
 
 
@@ -330,6 +331,8 @@ void fill_bg() {
 }
 int main(void) {
 	printf(1, "\nshell display address: 0x%x\n\n", display);
+	last_cursor_position.x_coord = 0;
+	last_cursor_position.y_coord = 0;
 	cursor_position.x_coord = get_cursor_position_x_coord();
 	cursor_position.y_coord = get_cursor_position_y_coord();
 
@@ -346,9 +349,15 @@ int main(void) {
 	drawStr("Hello World!", 50, 400, color);
 
 	while (1) {
-		cursor_position.x_coord = get_cursor_position_x_coord();
-		cursor_position.y_coord = get_cursor_position_y_coord();
-		init_graphics();
-		demo();
+		int x_coord = get_cursor_position_x_coord();
+		int y_coord = get_cursor_position_y_coord();
+		if(x_coord!=last_cursor_position.x_coord || y_coord!=last_cursor_position.y_coord){
+			last_cursor_position = cursor_position;
+			cursor_position.x_coord = x_coord;
+			cursor_position.y_coord = y_coord;
+			init_graphics();
+			demo();
+		}
+
 	}
 }
