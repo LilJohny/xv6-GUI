@@ -29,7 +29,6 @@ OBJS = \
 	vm.o\
 	mouse.o\
     msg.o\
-    graphics.o\
 
 # Cross-compiling (e.g., on Mac OS X)
 # TOOLPREFIX = i386-jos-elf
