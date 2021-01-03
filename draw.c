@@ -9,6 +9,7 @@
 #include "icons.h"
 #include "bitmap.c"
 #include "pixel.h"
+#include "cursor.h"
 
 /* --------------------------------------------------------------------------------------------------------------------- */
 // Pre-defined colors
@@ -245,6 +246,8 @@ void drawIcon(ICON ic) {
 /* --------------------------------------------------------------------------------------------------------------------- */
 // Demo function of GUI capabilities
 
+struct cursor cursor_loc;
+
 void demo() {
 
     //PIXEL *pix2 = display;
@@ -310,6 +313,32 @@ void demo() {
 
     drawIcon(ic);
 
+	PIXEL pixel;
+
+	pixel.R = 0x33;
+	pixel.G = 0;
+	pixel.B = 0;
+	display += DISPLAY_WIDTH * cursor_loc.y_coord;
+	display += cursor_loc.x_coord;
+	for (int i = 0; i < CURSOR_HEIGHT; i++) {
+		for (int j = 0; j < CURSOR_WIDTH; j++) {
+			drawPixel(j, pixel);
+		}
+		display += DISPLAY_WIDTH;
+	}
+
+}
+
+void init_cursor(){
+	cursor_loc = cursor_default;
+}
+void change_cursor_loc(int x_diff, int y_diff) {
+	if (cursor_loc.y_coord - x_diff >= 0 && cursor_loc.y_coord - x_diff < DISPLAY_HEIGHT) {
+		cursor_loc.y_coord -= x_diff;
+	}
+	if (cursor_loc.x_coord + y_diff >= 0 && cursor_loc.x_coord + y_diff < DISPLAY_WIDTH) {
+		cursor_loc.x_coord += y_diff;
+	}
 }
 
 int main(void) {
