@@ -8,6 +8,7 @@
 #include "font.h"
 #include "x86.h"
 #include "user.h"
+#include "cursor.h"
 
 struct spinlock gui_lock;
 
@@ -17,7 +18,9 @@ void drawPixel(PIXEL* DISPLAY_pix_pointer, PIXEL color_obj) {
     drawpixel(DISPLAY_pix_pointer - display, color_obj.R, color_obj.G, color_obj.B);
 }
 
-
+void init_cursor(){
+	cursor_loc = cursor_default;
+}
 // Initializes the main GUI window
 void initGraphics() {
 	uint graphic_mem_start = KERNBASE + 0x1028;
