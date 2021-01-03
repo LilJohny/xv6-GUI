@@ -9,7 +9,4 @@
 
 #ifndef __ASSEMBLER__
 
-// Pixel array that represents the display
-PIXEL *display;
-
 #endif

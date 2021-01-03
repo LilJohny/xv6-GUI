@@ -1,3 +1,5 @@
+#include "pixel.h"
+
 struct stat;
 struct rtcdate;
 
@@ -23,6 +25,8 @@ int getpid(void);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
+int drawpixel(int, int, int, int);
+int getpixel(int, struct PIXEL*);
 
 // ulib.c
 int stat(const char*, struct stat*);

@@ -6,6 +6,8 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
+#include "graphics_defs.h"
+#include "pixel.h"
 
 int
 sys_fork(void)
@@ -88,4 +90,26 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
+}
+
+int sys_drawpixel(void) {
+
+  int offset, r, g, b;
+  argint(0, &offset);
+  argint(1, &r);
+  argint(2, &g);
+  argint(3, &b);
+  drawpixel(offset, r, g, b);
+  //cprintf("syscall pixel done\n");
+
+  return 0;
+}
+
+int sys_getpixel(void) {
+  PIXEL* ptr;
+  int offset;
+  argint(0, &offset);
+  argptr(1, (void*)&ptr, sizeof(*ptr));
+  getpixel(offset, ptr);
+  return 0;
 }

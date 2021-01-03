@@ -1,5 +1,4 @@
 #include "types.h"
-#include "defs.h"
 #include "param.h"
 #include "mmu.h"
 #include "memlayout.h"
@@ -21,7 +20,6 @@ void drawPixel(PIXEL *DISPLAY_pix_pointer, PIXEL color_obj) {
 	DISPLAY_pix_pointer->B = color_obj.B;
 }
 
-void demo() {
 
 	PIXEL *pix2 = display;
 
