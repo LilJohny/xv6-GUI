@@ -106,7 +106,7 @@ extern int sys_write(void);
 extern int sys_uptime(void);
 extern int sys_drawpixel(void);
 extern int sys_getpixel(void);
-extern struct cursor get_cursor_position(void);
+extern struct cursor sys_get_cursor_position(void);
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
 [SYS_exit]    sys_exit,
@@ -130,7 +130,8 @@ static int (*syscalls[])(void) = {
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
 [SYS_drawpixel] sys_drawpixel,
-[SYS_getpixel] sys_getpixel
+[SYS_getpixel] sys_getpixel,
+[SYS_get_cursor_position] sys_get_cursor_position
 };
 
 void

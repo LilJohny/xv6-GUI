@@ -245,7 +245,7 @@ void drawIcon(ICON ic) {
 /* --------------------------------------------------------------------------------------------------------------------- */
 // Demo function of GUI capabilities
 
-
+struct cursor cursor_position;
 
 void demo() {
 
@@ -306,21 +306,20 @@ void demo() {
 //        }
 //    }
 
-	printf(1, "\nImage width: 0x%x\n\n", w);
 
 	ICON ic = getIconFromPicture(50 + offset, 80 + offsetY, w, h, bmp_img);
 
 	drawIcon(ic);
 
-	struct cursor cursor_loc = get_cursor_position();
+	cursor_position = get_cursor_position();
 
 	PIXEL pixel;
 
 	pixel.R = 0x33;
 	pixel.G = 0;
 	pixel.B = 0;
-	int cursor_offset = DISPLAY_WIDTH * cursor_loc.y_coord;
-	cursor_offset += cursor_loc.x_coord;
+	int cursor_offset = DISPLAY_WIDTH * cursor_position.y_coord;
+	cursor_offset += cursor_position.x_coord;
 	for (int i = 0; i < CURSOR_HEIGHT; i++) {
 		for (int j = 0; j < CURSOR_WIDTH; j++) {
 			drawPixel(cursor_offset + j, pixel);
@@ -345,7 +344,8 @@ int main(void) {
 	drawStr("Hello World!", 50, 400, color);
 
 	while (1) {
-		// Endless loop
+		cursor_position = get_cursor_position();
+		demo();
 	}
 	exit();
 }
