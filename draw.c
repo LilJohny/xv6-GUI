@@ -10,6 +10,7 @@
 #include "bitmap.c"
 #include "pixel.h"
 #include "cursor.h"
+#include "draw.h"
 
 /* --------------------------------------------------------------------------------------------------------------------- */
 // Pre-defined colors
@@ -343,7 +344,7 @@ void change_cursor_loc(int x_diff, int y_diff) {
 
 int main(void) {
   printf(1, "\nshell display address: 0x%x\n\n", display);
-  
+  init_cursor()
   demo();
 
   PIXELA color;
