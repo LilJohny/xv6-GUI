@@ -41,3 +41,5 @@ void* memset(void*, int, uint);
 void* malloc(uint);
 void free(void*);
 int atoi(const char*);
+//
+struct cursor get_cursor_position(void);

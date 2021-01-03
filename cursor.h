@@ -4,10 +4,17 @@
 
 #ifndef XV6_GUI__CURSOR_H_
 #define XV6_GUI__CURSOR_H_
+#include "graphics_defs.h"
 
 struct cursor{
 	int x_coord;
 	int y_coord;
 };
-struct cursor cursor_default = {DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2};
+
+
+void init_cursor();
+void change_cursor_loc(int x_diff, int y_diff);
+extern struct cursor cursor_loc;
+extern struct cursor cursor_default;
+struct cursor get_cursor_location();
 #endif //XV6_GUI__CURSOR_H_

@@ -5,6 +5,7 @@
 #ifndef XV6_GUI__MOUSE_MSG_H_
 #define XV6_GUI__MOUSE_MSG_H_
 #include "types.h"
+#include "cursor.h"
 
 #define M_KEY_UP 1
 #define M_KEY_DOWN 2

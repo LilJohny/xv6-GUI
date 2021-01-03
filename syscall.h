@@ -22,3 +22,4 @@
 #define SYS_close  21
 #define SYS_drawpixel 22
 #define SYS_getpixel 23
+#define SYS_get_cursor_position 24

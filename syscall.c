@@ -6,6 +6,7 @@
 #include "proc.h"
 #include "x86.h"
 #include "syscall.h"
+#include "cursor.h"
 
 // User code makes a system call with INT T_SYSCALL.
 // System call number in %eax.
@@ -105,7 +106,7 @@ extern int sys_write(void);
 extern int sys_uptime(void);
 extern int sys_drawpixel(void);
 extern int sys_getpixel(void);
-
+extern struct cursor get_cursor_position(void);
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
 [SYS_exit]    sys_exit,

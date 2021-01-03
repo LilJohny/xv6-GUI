@@ -27,6 +27,7 @@ OBJS = \
 	uart.o\
 	vectors.o\
 	vm.o\
+	cursor.o\
 	mouse.o\
     msg.o\
     graphics.o\

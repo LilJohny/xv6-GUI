@@ -8,6 +8,7 @@
 #include "proc.h"
 #include "graphics_defs.h"
 #include "pixel.h"
+#include "cursor.h"
 
 int
 sys_fork(void)
@@ -112,4 +113,8 @@ int sys_getpixel(void) {
   argptr(1, (void*)&ptr, sizeof(*ptr));
   getpixel(offset, ptr);
   return 0;
+}
+
+struct cursor sys_get_cursor_position(void){
+	return get_cursor_location();
 }

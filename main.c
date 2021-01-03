@@ -32,7 +32,6 @@ main(void)
   fileinit();      // file table
   ideinit();       // disk
   mouse_init();    // mouse
-  init_cursor();	 // creates default cursor
   initGraphics();  // graphics
   startothers();   // start other processors
   kinit2(P2V(4*1024*1024), P2V(PHYSTOP)); // must come after startothers()

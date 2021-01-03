@@ -21,6 +21,6 @@ typedef struct PIXELA {
 } PIXELA;
 
 // Display pixel buffer
-PIXEL *display;
+extern PIXEL *display;
 
 #endif

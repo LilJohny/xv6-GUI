@@ -30,4 +30,5 @@ SYSCALL(sbrk)
 SYSCALL(sleep)
 SYSCALL(uptime)
 SYSCALL(drawpixel)
-SYSCALL(getpixel);
+SYSCALL(getpixel)
+SYSCALL(get_cursor_position)
