@@ -10,6 +10,14 @@ struct sleeplock;
 struct stat;
 struct superblock;
 
+
+
+struct PIXEL;
+struct PIXELA;
+
+// graphics.c
+void            initGraphics(void);
+
 // bio.c
 void            binit(void);
 struct buf*     bread(uint, uint);
@@ -106,6 +114,8 @@ int             pipewrite(struct pipe*, char*, int);
 int             cpuid(void);
 void            exit(void);
 int             fork(void);
+int             drawpixel(int, int, int, int);
+int             getpixel(int, struct PIXEL*);
 int             growproc(int);
 int             kill(int);
 struct cpu*     mycpu(void);
