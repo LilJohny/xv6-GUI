@@ -23,46 +23,6 @@ void drawPixel(PIXEL *DISPLAY_pix_pointer, PIXEL color_obj) {
 
 void demo() {
 
-	PIXEL *pix2 = display;
-
-	int offset = 0;
-
-	const char *words[10];
-	words[0] = "Red";
-	words[1] = "Blue";
-	words[2] = "Green";
-	words[3] = "Yellow";
-	words[4] = "Cyan";
-	words[5] = "Magenta";
-	words[6] = "White";
-	words[7] = "Black";
-	words[8] = "Orange";
-	words[9] = "Brown";
-
-	PIXELA colours[10];
-	colours[0] = getRed();
-	colours[1] = getBlue();
-	colours[2] = getGreen();
-	colours[3] = getYellow();
-	colours[4] = getCyan();
-	colours[5] = getMagenta();
-	colours[6] = getWhite();
-	colours[7] = getBlack();
-	colours[8] = getOrange();
-	colours[9] = getBrown();
-
-	offset = 0;
-	int offsetY = 0;
-	for (int idx = 0; idx < 10; idx++) {
-
-		int wordLen = strlen(words[idx]);
-
-		for (int q = 0; q < wordLen; q++) {
-			offset += drawChar(pix2, words[idx][q], 50 + offset, 80 + offsetY, colours[idx]);
-		}
-		offset = 0;
-		offsetY += 15;
-	}
 	PIXEL pixel;
 
 	pixel.R = 0x33;
@@ -77,6 +37,9 @@ void demo() {
 		display += DISPLAY_WIDTH;
 	}
 }
+
+
+
 void init_cursor(){
 	cursor_loc = cursor_default;
 }
