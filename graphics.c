@@ -20,8 +20,141 @@ void drawPixel(PIXEL *DISPLAY_pix_pointer, PIXEL color_obj) {
 	DISPLAY_pix_pointer->G = color_obj.G;
 	DISPLAY_pix_pointer->B = color_obj.B;
 }
+void draw_hello_world_icon() {
+	PIXELA pixel_red_a = getRed();
+	PIXEL pixel_red;
 
+	PIXELA pixel_white_a = getWhite();
+	PIXEL pixel_white;
+
+	pixel_red.R = pixel_red_a.R;
+	pixel_red.G = pixel_red_a.G;
+	pixel_red.B = pixel_red_a.B;
+
+	pixel_white.R = pixel_white_a.R;
+	pixel_white.G = pixel_white_a.G;
+	pixel_white.B = pixel_white_a.B;
+
+	int offset = DISPLAY_WIDTH * 10 + 10;
+	display += DISPLAY_WIDTH * 10;
+	display += 10;
+	for (int i = 0; i < 30; i++) {
+		for (int j = 0; j < 30; j++) {
+			drawPixel(display + j, pixel_red);
+			if ((j == 7 || j == 22 || j == 8 || j == 23 || j == 6 || j == 21) && (i == 10 || i == 11)) {
+				drawPixel(display + j, pixel_white);
+			}
+			if ((j >= 5 && j <= 24) && (i == 20)) {
+				drawPixel(display + j, pixel_white);
+			}
+		}
+		display += DISPLAY_WIDTH;
+		offset += DISPLAY_WIDTH;
+	}
+	display -= offset;
+}
+int hello_world_window_x_coord = 40;
+int hello_world_window_y_coord = 90;
+void draw_hello_world_window() {
+	PIXELA pixel_black_a = getBlack();
+	PIXEL pixel_black;
+
+	PIXELA pixel_white_a = getWhite();
+	PIXEL pixel_white;
+
+	PIXELA pixel_red_a = getRed();
+	PIXEL pixel_red;
+
+	pixel_black.R = pixel_black_a.R;
+	pixel_black.G = pixel_black_a.G;
+	pixel_black.B = pixel_black_a.B;
+
+	pixel_white.R = pixel_white_a.R;
+	pixel_white.G = pixel_white_a.G;
+	pixel_white.B = pixel_white_a.B;
+
+	pixel_red.R = pixel_red_a.R;
+	pixel_red.G = pixel_red_a.G;
+	pixel_red.B = pixel_red_a.B;
+
+	int offset = DISPLAY_WIDTH * hello_world_window_y_coord + 10 + hello_world_window_x_coord;
+	display += DISPLAY_WIDTH * (hello_world_window_y_coord + 10);
+	display += hello_world_window_x_coord;
+	for (int i = 0; i < 50; i++) {
+		for (int j = 0; j < 160; j++) {
+			drawPixel(display + j, pixel_black);
+		}
+		display += DISPLAY_WIDTH;
+		offset += DISPLAY_WIDTH;
+	}
+	display -= offset;
+
+	offset = DISPLAY_WIDTH * hello_world_window_y_coord + hello_world_window_x_coord + 10;
+	display += DISPLAY_WIDTH * hello_world_window_y_coord;
+	display += hello_world_window_x_coord + 10;
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 150; j++) {
+			drawPixel(display + j, pixel_white);
+		}
+		display += DISPLAY_WIDTH;
+		offset += DISPLAY_WIDTH;
+	}
+	display -= offset;
+
+	offset = DISPLAY_WIDTH * hello_world_window_y_coord + hello_world_window_x_coord + 160;
+	display += DISPLAY_WIDTH * hello_world_window_y_coord;
+	display += hello_world_window_x_coord + 160;
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 10; j++) {
+			if (i == j || 10 - i == j) {
+				drawPixel(display + j, pixel_white);
+				continue;
+			}
+			drawPixel(display + j, pixel_red);
+
+		}
+		display += DISPLAY_WIDTH;
+		offset += DISPLAY_WIDTH;
+	}
+	display -= offset;
+	const char *word = "Hello, world !";
+	for (int q = 0; q < 14; q++) {
+		offset += drawChar(display, word[q], (hello_world_window_x_coord+10) + q * 10, hello_world_window_y_coord+20, pixel_white_a);
+	}
+}
+
+int in_hello_wolrd_icon(struct cursor cursor_loc) {
+	int x_cond = cursor_loc.x_coord >= 10 && cursor_loc.x_coord <= 40;
+	int y_cond = cursor_loc.y_coord >= 10 && cursor_loc.y_coord <= 40;
+	return x_cond && y_cond;
+}
+int in_hello_world_close(struct cursor cursor_loc) {
+	int x_cond =
+			cursor_loc.x_coord >= hello_world_window_x_coord + 160 && cursor_loc.x_coord <= hello_world_window_x_coord + 170;
+	int y_cond =
+			cursor_loc.y_coord >= hello_world_window_y_coord && cursor_loc.y_coord <= hello_world_window_y_coord + 10;
+	return x_cond && y_cond;
+}
+int in_hello_world_upbar(struct cursor cursor_loc) {
+	int x_cond =
+			cursor_loc.x_coord >= hello_world_window_x_coord + 10 && cursor_loc.x_coord <= hello_world_window_x_coord + 160;
+	int y_cond =
+			cursor_loc.y_coord >= hello_world_window_y_coord && cursor_loc.y_coord <= hello_world_window_y_coord + 10;
+	return x_cond && y_cond;
+}
+
+int show_hello_world_icon = 1;
+int show_hello_world_window = 0;
+int hello_window_attached = 0;
 void demo() {
+
+	if (show_hello_world_icon == 1) {
+		draw_hello_world_icon();
+	}
+
+	if (show_hello_world_window == 1) {
+		draw_hello_world_window();
+	}
 
 	PIXEL pixel;
 
@@ -38,9 +171,7 @@ void demo() {
 	}
 }
 
-
-
-void init_cursor(){
+void init_cursor() {
 	cursor_loc = cursor_default;
 }
 // Initializes the main GUI window
@@ -115,8 +246,29 @@ void drawStr(PIXEL *buf, char *str, int x, int y, PIXELA color) {
 void change_cursor_loc(int x_diff, int y_diff) {
 	if (cursor_loc.y_coord - x_diff >= 0 && cursor_loc.y_coord - x_diff < DISPLAY_HEIGHT) {
 		cursor_loc.y_coord -= x_diff;
+		if (hello_window_attached == 1) {
+			hello_world_window_y_coord -= x_diff;
+		}
 	}
 	if (cursor_loc.x_coord + y_diff >= 0 && cursor_loc.x_coord + y_diff < DISPLAY_WIDTH) {
 		cursor_loc.x_coord += y_diff;
+		if (hello_window_attached == 1) {
+			hello_world_window_x_coord += y_diff;
+		}
 	}
+
+}
+void cursor_clicked() {
+	if (in_hello_wolrd_icon(cursor_loc)) {
+		show_hello_world_window = 1;
+	}
+	if (in_hello_world_close(cursor_loc)) {
+		show_hello_world_window = 0;
+	}
+	if (in_hello_world_upbar(cursor_loc)) {
+		hello_window_attached = 1;
+	}
+}
+void cursor_released(){
+	hello_window_attached = 0;
 }

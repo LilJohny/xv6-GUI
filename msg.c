@@ -19,8 +19,10 @@ int handle_message(message *msg) {
 		demo();
 	} else if (msg->msg_type == M_MOUSE_DOWN) {
 		cprintf("MOUSE DOWN: btn=%x\n", msg->params[0]);
+		cursor_clicked();
 	} else if (msg->msg_type == M_MOUSE_UP) {
 		cprintf("MOUSE UP: btn=%x\n", msg->params[0]);
+		cursor_released();
 	}
 	return 0;
 }
