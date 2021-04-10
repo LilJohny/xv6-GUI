@@ -20,6 +20,59 @@ void drawPixel(PIXEL *DISPLAY_pix_pointer, PIXEL color_obj) {
 	DISPLAY_pix_pointer->G = color_obj.G;
 	DISPLAY_pix_pointer->B = color_obj.B;
 }
+
+void draw_file_manager_icon() {
+	PIXELA pixel_orange_a = getOrange();
+	PIXEL pixel_orange;
+
+	pixel_orange.R = pixel_orange_a.R;
+	pixel_orange.G = pixel_orange_a.G;
+	pixel_orange.B = pixel_orange_a.B;
+	PIXELA pixel_white_a = getWhite();
+	PIXEL pixel_white;
+
+	pixel_white.R = pixel_white_a.R;
+	pixel_white.G = pixel_white_a.G;
+	pixel_white.B = pixel_white_a.B;
+
+	int offset = DISPLAY_WIDTH * 60 + 10;
+	display += DISPLAY_WIDTH * 60;
+	display += 10;
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 15; j++) {
+			drawPixel(display + j, pixel_orange);
+		}
+		display += DISPLAY_WIDTH;
+		offset += DISPLAY_WIDTH;
+	}
+	display -= offset;
+
+	offset = DISPLAY_WIDTH * 65 + 12;
+	display += DISPLAY_WIDTH * 65;
+	display += 12;
+	for (int i = 0; i < 6; i++) {
+		for (int j = 0; j < 10; j++) {
+			drawPixel(display + j, pixel_white);
+		}
+		display += DISPLAY_WIDTH;
+		offset += DISPLAY_WIDTH;
+	}
+	display -= offset;
+
+	offset = DISPLAY_WIDTH * 70 + 10;
+	display += DISPLAY_WIDTH * 70;
+	display += 10;
+	for (int i = 0; i < 30; i++) {
+		for (int j = 0; j < 40; j++) {
+			drawPixel(display + j, pixel_orange);
+		}
+		display += DISPLAY_WIDTH;
+		offset += DISPLAY_WIDTH;
+	}
+	display -= offset;
+
+}
+
 void draw_hello_world_icon() {
 	PIXELA pixel_red_a = getRed();
 	PIXEL pixel_red;
@@ -53,7 +106,7 @@ void draw_hello_world_icon() {
 	}
 	display -= offset;
 }
-int hello_world_window_x_coord = 40;
+int hello_world_window_x_coord = 60;
 int hello_world_window_y_coord = 90;
 void draw_hello_world_window() {
 	PIXELA pixel_black_a = getBlack();
@@ -117,10 +170,16 @@ void draw_hello_world_window() {
 		offset += DISPLAY_WIDTH;
 	}
 	display -= offset;
+
 	const char *word = "Hello, world !";
 	for (int q = 0; q < 14; q++) {
-		offset += drawChar(display, word[q], (hello_world_window_x_coord+10) + q * 10, hello_world_window_y_coord+20, pixel_white_a);
+		offset += drawChar(display,
+											 word[q],
+											 (hello_world_window_x_coord + 10) + q * 10,
+											 hello_world_window_y_coord + 20,
+											 pixel_white_a);
 	}
+	display += 10;
 }
 
 int in_hello_wolrd_icon(struct cursor cursor_loc) {
@@ -130,7 +189,7 @@ int in_hello_wolrd_icon(struct cursor cursor_loc) {
 }
 int in_hello_world_close(struct cursor cursor_loc) {
 	int x_cond =
-			cursor_loc.x_coord >= hello_world_window_x_coord + 160 && cursor_loc.x_coord <= hello_world_window_x_coord + 170;
+			cursor_loc.x_coord >= hello_world_window_x_coord + 150 && cursor_loc.x_coord <= hello_world_window_x_coord + 170;
 	int y_cond =
 			cursor_loc.y_coord >= hello_world_window_y_coord && cursor_loc.y_coord <= hello_world_window_y_coord + 10;
 	return x_cond && y_cond;
@@ -143,9 +202,11 @@ int in_hello_world_upbar(struct cursor cursor_loc) {
 	return x_cond && y_cond;
 }
 
+int show_file_manager_icon = 0;
 int show_hello_world_icon = 1;
 int show_hello_world_window = 0;
 int hello_window_attached = 0;
+int show_file_manager_window = 0;
 void demo() {
 
 	if (show_hello_world_icon == 1) {
@@ -155,7 +216,76 @@ void demo() {
 	if (show_hello_world_window == 1) {
 		draw_hello_world_window();
 	}
+	if (show_file_manager_icon == 1) {
+		draw_file_manager_icon();
+	}
+	if(show_file_manager_window) {
+		PIXEL pixel_white;
+		PIXELA pixela_white = getWhite();
 
+		pixel_white.R = pixela_white.R;
+		pixel_white.G = pixela_white.G;
+		pixel_white.B = pixela_white.B;
+
+		PIXEL pixel_red;
+		PIXELA pixela_red = getRed();
+		pixel_red.R = pixela_red.R;
+		pixel_red.G = pixela_red.G;
+		pixel_red.B = pixela_red.B;
+
+		PIXEL pixel_black;
+		PIXELA pixela_black = getBlack();
+
+		pixel_black.R = pixela_black.R;
+		pixel_black.G = pixela_black.G;
+		pixel_black.B = pixela_black.B;
+
+		int offset = DISPLAY_WIDTH * 90 + 10 + 60;
+		display += DISPLAY_WIDTH * (90 + 10);
+		display += 60;
+		for (int i = 0; i < 450; i++) {
+			for (int j = 0; j < 400; j++) {
+				if (i == 0 || i == 1) {
+					drawPixel(display + j, pixel_black);
+					continue;
+				}
+				drawPixel(display + j, pixel_white);
+
+			}
+			display += DISPLAY_WIDTH;
+			offset += DISPLAY_WIDTH;
+		}
+		display -= offset;
+		offset = DISPLAY_WIDTH * 70 + 10 + 70;
+		display += DISPLAY_WIDTH * (70 + 10);
+		display += 70;
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 390; j++) {
+
+				drawPixel(display + j, pixel_white);
+
+			}
+			display += DISPLAY_WIDTH;
+			offset += DISPLAY_WIDTH;
+		}
+		display -= offset;
+		offset = DISPLAY_WIDTH * 70 + 470;
+		display += DISPLAY_WIDTH * 70;
+		display += 470;
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				if (i == j || 10 - i == j) {
+					drawPixel(display + j, pixel_white);
+					continue;
+				}
+				drawPixel(display + j, pixel_red);
+
+			}
+			display += DISPLAY_WIDTH;
+			offset += DISPLAY_WIDTH;
+		}
+		display -= offset;
+	}
 	PIXEL pixel;
 
 	pixel.R = 0x33;
@@ -169,6 +299,7 @@ void demo() {
 		}
 		display += DISPLAY_WIDTH;
 	}
+
 }
 
 void init_cursor() {
@@ -269,6 +400,6 @@ void cursor_clicked() {
 		hello_window_attached = 1;
 	}
 }
-void cursor_released(){
+void cursor_released() {
 	hello_window_attached = 0;
 }
